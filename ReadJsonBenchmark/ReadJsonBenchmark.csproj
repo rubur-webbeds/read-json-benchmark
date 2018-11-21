@@ -6,6 +6,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="lorem.json" />
+    <None Remove="lorem_min.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="lorem.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lorem_min.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0-preview3-35497" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.2.0-preview3-35497" />
     <PackageReference Include="BenchmarkDotNet" Version="0.11.3" />

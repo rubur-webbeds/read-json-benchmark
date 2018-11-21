@@ -1,37 +1,39 @@
-﻿using System;
-using System.IO;
-using BenchmarkDotNet.Attributes;
-using Microsoft.Extensions.Caching.Memory;
+﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Running;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace ReadJsonBenchmark
 {
     public class App
     {
-        private readonly IMemoryCache _cache;
+        private readonly IJsonReader _reader;
 
-        public App(IMemoryCache cache)
+        public App(IJsonReader reader)
         {
-            _cache = cache;
+            _reader = reader;
 
-            SaveJsonOnCache("Lorem", ReadJsonFromDisk("lorem_min.json"));
+            _reader.SaveJsonOnCache("Lorem", _reader.ReadJsonFromDisk("lorem_min.json"));
         }
 
-        public void SaveJsonOnCache(string cacheKey, string file)
+        [Benchmark]
+        public void ReadDisk()
         {
-            _cache.Set<string>(cacheKey, file);
+            _reader.ReadJsonFromDisk("lorem_min.json");
         }
 
-        public string ReadJsonFromCache(string cacheKey)
+        [Benchmark]
+        public void ReadCache()
         {
-            return _cache.Get<string>(cacheKey);
+            _reader.ReadJsonFromCache("Lorem");
         }
 
-        public string ReadJsonFromDisk(string path)
+        public void Execute()
         {
-            using (var reader = new StreamReader(path))
-            {
-                return reader.ReadToEnd();
-            }
+            var summary = BenchmarkRunner.Run<App>();
+            Console.ReadKey();
         }
+
     }
 }
