@@ -1,5 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,25 +9,25 @@ namespace ReadJsonBenchmark
 {
     public class App
     {
-        private readonly IJsonReader _reader;
+        private readonly JsonReader _reader;
 
-        public App(IJsonReader reader)
+        public App()
         {
-            _reader = reader;
+            _reader = new JsonReader(new MemoryCache(new MemoryCacheOptions()));
 
             _reader.SaveJsonOnCache("Lorem", _reader.ReadJsonFromDisk("lorem_min.json"));
         }
 
         [Benchmark]
-        public void ReadDisk()
+        public string ReadDisk()
         {
-            _reader.ReadJsonFromDisk("lorem_min.json");
+            return _reader.ReadJsonFromDisk("lorem_min.json");
         }
 
         [Benchmark]
-        public void ReadCache()
+        public string ReadCache()
         {
-            _reader.ReadJsonFromCache("Lorem");
+            return _reader.ReadJsonFromCache("Lorem");
         }
 
         public void Execute()

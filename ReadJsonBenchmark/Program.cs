@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 using Microsoft.Extensions.Caching.Memory;
@@ -12,11 +12,9 @@ namespace ReadJsonBenchmark
         {
             var serviceProvider = new ServiceCollection()
                 .AddMemoryCache()
-                .AddSingleton<App>()
-                .AddSingleton<IJsonReader, JsonReader>()
                 .BuildServiceProvider();
 
-            serviceProvider.GetService<App>().Execute();
+            new App().Execute();
         }
 
     }

@@ -5,7 +5,7 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace ReadJsonBenchmark
 {
-    public class JsonReader : IJsonReader
+    public class JsonReader
     {
         private readonly IMemoryCache _cache;
 
